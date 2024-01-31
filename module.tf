@@ -1,23 +1,49 @@
 terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 4.164984"
-    }
+  backend "local" {
+    workspace_dir = "/home/meshcloud/states"
   }
 
-  required_version = ">= 1.2.0"
+
+  required_version = ">=0.12"
+
+  required_providers {
+    azurerm = {
+      source                = "hashicorp/azurerm"
+      version               = "3.27.0"
+    }
+  }
 }
 
-provider "aws" {
-  region  = "us-west-2"
+provider "azurerm" {
+  subscription_id = var.subscription_id
+  # tenant_id, client_id and client_secret must be set via env variables
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = true
+    }
+  }
 }
 
-resource "aws_instance" "app_server" {
-  ami           = "ami-830c94e3"
-  instance_type = "t2.micro"
+variable "subscription_id" {
+  description = "Subscription ID of the subscription the network shall be created in."
+  type        = string
+}
 
-  tags = {
-    Name = "ExampleAppServerInstance"
+variable "location" {
+  description = "Location of the network"
+  type        = string
+  default     = "WestEurope"
+}
+
+resource "azurerm_resource_group" "test-rg" {
+  provider = azurerm.spoke-provider
+  name     = "${local.prefix-spoke}-sto-test-rg"
+  location = var.location
+
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to tags, as tags are managed by meshStack and policies
+      tags
+    ]
   }
 }
