@@ -36,7 +36,7 @@ variable "location" {
 }
 
 resource "azurerm_resource_group" "test-rg" {
-  name     = "${local.prefix-spoke}-sto-test-rg"
+  name     = "sto-test-rg"
   location = var.location
 
   lifecycle {
