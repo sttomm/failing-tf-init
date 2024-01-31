@@ -36,7 +36,6 @@ variable "location" {
 }
 
 resource "azurerm_resource_group" "test-rg" {
-  provider = azurerm.spoke-provider
   name     = "${local.prefix-spoke}-sto-test-rg"
   location = var.location
 
