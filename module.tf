@@ -25,18 +25,23 @@ provider "azurerm" {
 }
 
 variable "subscription_id" {
-  description = "Subscription ID of the subscription the network shall be created in."
+  description = "Subscription ID of the subscription the resource group shall be created in."
+  type        = string
+}
+
+variable "rg_name" {
+  description = "Name of the resource group to be created."
   type        = string
 }
 
 variable "location" {
-  description = "Location of the network"
+  description = "Location of the resource group"
   type        = string
   default     = "WestEurope"
 }
 
 resource "azurerm_resource_group" "test-rg" {
-  name     = "sto-test-rg"
+  name     = "${local.rg-name}"
   location = var.location
 
   lifecycle {
