@@ -42,7 +42,7 @@ variable "location" {
 
 resource "azurerm_resource_group" "test-rg" {
   name     = var.rg_name
-  location = "blah"
+  location = var.location
 
   lifecycle {
     ignore_changes = [
