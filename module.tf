@@ -1,6 +1,6 @@
 terraform {
   backend "local" {
-    workspace_dir = "/home/meshcloud/states"
+    workspace_dir = "/Users/stefantomm/states"
   }
 
 
